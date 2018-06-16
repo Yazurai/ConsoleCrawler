@@ -1,0 +1,4 @@
+#ifndef UNTITLED_SWITCH_H
+#define UNTITLED_SWITCH_H
+
+#endif //UNTITLED_SWITCH_H
