@@ -10,7 +10,7 @@ char *getLabel(struct tickBox *ptr);
 bool getTicked(struct tickBox *ptr);
 
 struct tickBox *newTickBoxDefault();
-void newTickBox(int x, int y, char *label, bool baseState);
+struct tickBox *newTickBox(uint8_t x, uint8_t y, char *label, bool baseState);
 
 void render(struct tickBox *ptr, int color);
 

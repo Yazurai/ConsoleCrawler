@@ -53,14 +53,16 @@ struct tickBox *newTickBoxDefault() {
     tb.pos.y = 1;
     strcpy(tb.label, "");
     tb.ticked = false;
+    return &tb;
 }
 
-void newTickBox(int x, int y, char *label, bool baseState) {
+struct tickBox *newTickBox(uint8_t x, uint8_t y, char *label, bool baseState) {
     struct tickBox tb;
     tb.pos.x = x;
     tb.pos.y = y;
     strcpy(tb.label, label);
     tb.ticked = baseState;
+    return &tb;
 }
 
 //-------------------------
