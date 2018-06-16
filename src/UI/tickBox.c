@@ -12,11 +12,9 @@ struct tickBox{
 };
 
 //-------------------------
-//VARIABLES
+//VARIABLE FUNCTIONS
 //-------------------------
-struct screenPos pos;
-
- struct screenPos getPos(struct tickBox *ptr) {
+struct screenPos getPos(struct tickBox *ptr) {
     return ptr->pos;
 }
 
@@ -38,18 +36,18 @@ void setPos(struct tickBox *ptr, struct screenPos pos) {
     }
 }
 
- char *getLabel(struct tickBox *ptr) {
+char *getLabel(struct tickBox *ptr) {
     return ptr->label;
 }
 
- bool getTicked(struct tickBox *ptr) {
+bool getTicked(struct tickBox *ptr) {
     return ptr->ticked;
 }
 
 //-------------------------
 //FUNCTIONS
 //-------------------------
-struct tickBox *newTickBox() {
+struct tickBox *newTickBoxDefault() {
     struct tickBox tb;
     tb.pos.x = 1;
     tb.pos.y = 1;
@@ -57,7 +55,7 @@ struct tickBox *newTickBox() {
     tb.ticked = false;
 }
 
-void Switch(int x, int y, char *label, bool baseState) {
+void newTickBox(int x, int y, char *label, bool baseState) {
     struct tickBox tb;
     tb.pos.x = x;
     tb.pos.y = y;
@@ -68,17 +66,17 @@ void Switch(int x, int y, char *label, bool baseState) {
 //-------------------------
 //Cursor movements
 //-------------------------
-void MoveCursorToStart(struct tickBox *ptr) {
+void moveCursorToStart(struct tickBox *ptr) {
     printf("%c[%d;%dH", ESCAPE, ptr->pos.x, ptr->pos.y);
 }
-void MoveCursorToEnd(struct tickBox *ptr) {
+void moveCursorToEnd(struct tickBox *ptr) {
     printf("%c[%d;%dH", ESCAPE, ptr->pos.x, ptr->pos.y + (uint32_t)strlen(ptr->label) + 5);
 }
 
 //-------------------------
 //Rendering
 //-------------------------
-void Render(struct tickBox *ptr, int color) {
+void render(struct tickBox *ptr, int color) {
     char printed[25] = "";
     strcat(printed , ptr->label);
     if (ptr->ticked) {
@@ -86,26 +84,26 @@ void Render(struct tickBox *ptr, int color) {
     } else {
         strcat(printed ,"[ ]");
     }
-    MoveCursorToEnd(ptr);
-    printf("%c[%dm", ESCAPE, B:BLACK);
+    moveCursorToEnd(ptr);
+    printf("%c[%dm", ESCAPE, BLACK);
     printf("%c[1K", ESCAPE);
     printf("%c[%dm", ESCAPE, color);
-    MoveCursorToStart(ptr);
+    moveCursorToStart(ptr);
     printf(printed);
 }
 
 //-------------------------
 //State Changes
 //-------------------------
-void Flip(struct tickBox *ptr) {
+void flip(struct tickBox *ptr) {
     ptr->ticked = ptr->ticked ? false : true;
-    Render(ptr, BLUE);
+    render(ptr, BLUE);
 }
 void FocusChange(struct tickBox *ptr, bool isFocus) {
     if (isFocus) {
-        Render(ptr, BLUE);
+        render(ptr, BLUE);
     } else {
-        Render(ptr, BLACK);
+        render(ptr, BLACK);
     }
 }
 
