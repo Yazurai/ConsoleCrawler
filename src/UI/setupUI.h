@@ -1,0 +1,6 @@
+#ifndef DUNGEONCRAWLER_SETUPUI_H
+#define DUNGEONCRAWLER_SETUPUI_H
+
+void set_input_mode(void);
+
+#endif //DUNGEONCRAWLER_SETUPUI_H
