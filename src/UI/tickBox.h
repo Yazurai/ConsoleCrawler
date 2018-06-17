@@ -9,8 +9,8 @@ void setPos(struct tickBox *ptr, struct screenPos pos);
 char *getLabel(struct tickBox *ptr);
 bool getTicked(struct tickBox *ptr);
 
-struct tickBox *newTickBoxDefault();
-struct tickBox *newTickBox(uint8_t x, uint8_t y, char *label, bool baseState);
+void newTickBoxDefault(struct tickBox *ptr);
+void newTickBox(struct tickBox *ptr, uint8_t x, uint8_t y, char *label, bool baseState);
 
 void render(struct tickBox *ptr, int color);
 
