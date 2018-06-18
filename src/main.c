@@ -13,51 +13,11 @@
 #include "setupUI.h"
 #include "Enemy/enemy.h"
 #include "objects.h"
-#include "List/list.h"
+#include "environment.h"
 
-struct list *environment[25][80];
-char walls[25][82];
+enum objects environment[25][80];
 struct enemy enemies[20];
 bool shouldStop = false;
-pthread_t threads[2];
-
-void initEnv(void){
-    for (int i = 0; i < 25; ++i) {
-        for (int j = 0; j < 80; ++j) {
-            environment[i][j] = initList();
-        }
-    }
-}
-
-void renderWalls(void) {
-    setBgColor(BG_BLACK);
-    for (uint8_t i = 0; i <= 25; ++i) {
-        for (uint8_t j = 0; j <= 80; ++j) {
-            setCursorPos(j + 1, i + 1);
-            if (walls[i][j] == 'X') {
-                //add(environment[i][j], WALL);
-                printf("O");
-            }
-        }
-    }
-}
-
-bool checkEnemy(struct position pos){
-    for (int i = 0; i < 20; ++i) {
-        if(enemies[i].pos.x == pos.x && enemies[i].pos.y == pos.y){
-            return false;
-        }
-    }
-    return true;
-}
-
-bool checkWall(struct position pos){
-    if(walls[pos.y - 1][pos.x - 1] == 'X'){
-        return false;
-    } else {
-        return true;
-    }
-}
 
 void main(int argc, char **argv) {
     set_input_mode();   //start the input
@@ -66,18 +26,19 @@ void main(int argc, char **argv) {
 
     //Read in the environment info: walls
     FILE *wallsFile;
+    char input[25][82];
     wallsFile = fopen(argv[1], "r");
     for (int i = 0; i < 25; ++i) {
-        fgets(walls[i], 100, wallsFile);
+        fgets(input[i], 100, wallsFile);
     }
 
     fclose(wallsFile);
 
     //setup walls
-    renderWalls();
+    decodeInput(input);
 
     //setup player
-    spawnPlayer(2,2);
+    spawnPlayer(3,3);
 
     //setup enemies
     for (int j = 0; j < 20; ++j) {
@@ -95,6 +56,8 @@ void main(int argc, char **argv) {
         }
         newEnemy(&enemies[j], startPos, 'X');
     }
+
+    pthread_t threads[2];
 
     pthread_create(&threads[1], NULL, inputThread, NULL);
     pthread_create(&threads[0], NULL, updateEnemyThread, NULL);

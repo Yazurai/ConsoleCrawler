@@ -8,6 +8,8 @@
 #include "UIUtilies.h"
 #include "escCodes.h"
 #include "main.h"
+#include "objects.h"
+#include "environment.h"
 
 int8_t health = 100;
 struct position pos;
@@ -33,8 +35,21 @@ void spawnPlayer(uint8_t x, uint8_t y) {
 
 void move(enum direction dir) {
     struct position nextPos = pos;
-    setCursorPos(pos.x, pos.y);  //delete the previous location
-    printf(" ");
+    setCursorPos(pos.x, pos.y);  //set the previous location
+    if(checkHealthPack(pos)){
+        setFgColor(FG_GREEN);
+        printf("¤");
+        setFgColor(FG_WHITE);
+    } else {
+        if (!checkEnemy(pos)) {
+            setFgColor(FG_RED);
+            printf("X");
+            setFgColor(FG_WHITE);
+        } else {
+            printf(" ");
+        }
+    }
+
     switch (dir) {
         case UP:
             nextPos.y--;
@@ -63,6 +78,13 @@ void move(enum direction dir) {
             printf(" \\ V / (_) | |_| |/|   / _|  | |) | _| / _ \\| |) |_|");
             setCursorPos(5, 29);
             printf("  |_| \\___/ \\___/  |_|_\\___| |___/|___/_/ \\_\\___/(_)");
+        }
+    }
+    if(checkHealthPack(pos)){
+        if(health < 100){
+            health += 10;
+            health = (health > 100) ? 100 : health;
+            environment[pos.y - 1][pos.x - 1] = EMPTY;
         }
     }
     renderPlayer();

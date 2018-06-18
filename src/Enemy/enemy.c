@@ -8,6 +8,7 @@
 #include "position.h"
 #include "UIUtilies.h"
 #include "main.h"
+#include "environment.h"
 
 void newEnemy(struct enemy *ptr, struct position pos, char skin){
     ptr->skin = skin;
@@ -24,8 +25,14 @@ void renderEnemy(struct enemy *ptr){
 
 void moveEnemy(struct enemy *ptr, enum direction dir){
     struct position nextPos = ptr->pos;
-    setCursorPos(ptr->pos.x, ptr->pos.y);  //delete the previous location
-    printf(" ");
+    setCursorPos(ptr->pos.x, ptr->pos.y);  //set the previous location
+    if(checkHealthPack(ptr->pos)){
+        setFgColor(FG_GREEN);
+        printf("¤");
+        setFgColor(FG_WHITE);
+    } else {
+        printf(" ");
+    }
     switch (dir){
         case UP:
             nextPos.y--;
@@ -43,7 +50,6 @@ void moveEnemy(struct enemy *ptr, enum direction dir){
     if(checkWall(nextPos)){
         ptr->pos = nextPos;
     }
-    enemies;
     renderEnemy(ptr);
 }
 
