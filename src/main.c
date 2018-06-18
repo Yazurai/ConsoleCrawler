@@ -53,7 +53,7 @@ void main(int argc, char **argv) {
             if(startPos.x > 5 || startPos.y > 5){
                 goodPos = true;
             }
-            if(!checkEmpty(startPos)){
+            if(!checkEnvironment(startPos, EMPTY)){
                 goodPos = false;
             }
         }

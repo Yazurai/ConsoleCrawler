@@ -55,12 +55,12 @@ void spawnPlayer(uint8_t x, uint8_t y) {
 void move(enum direction dir) {
     struct position nextPos = pos;
     setCursorPos(pos.x, pos.y);  //set the previous location
-    if(checkShield(pos)){
+    if(checkEnvironment(pos, SHIELD)){
         setFgColor(FG_CYAN);
         printf("■");
         setFgColor(FG_WHITE);
     } else {
-        if (checkHealthPack(pos)) {
+        if (checkEnvironment(pos, HEALTHPACK)) {
             setFgColor(FG_GREEN);
             printf("¤");
             setFgColor(FG_WHITE);
@@ -89,7 +89,7 @@ void move(enum direction dir) {
             nextPos.x--;
             break;
     }
-    if (checkWall(nextPos)) {
+    if (!checkEnvironment(nextPos, WALL)) {
         pos = nextPos;
     }
     if (!checkEnemy(pos)){
@@ -109,20 +109,20 @@ void move(enum direction dir) {
             shield = false;
         }
     }
-    if(checkHealthPack(pos)){
+    if(checkEnvironment(pos, HEALTHPACK)){
         if(health < 100){
             health += 10;
             health = (health > 100) ? 100 : health;
             environment[pos.y - 1][pos.x - 1] = EMPTY;
         }
     }
-    if(checkShield(pos)){
+    if(checkEnvironment(pos, SHIELD)){
         if(!shield){
             shield = true;
             environment[pos.y - 1][pos.x - 1] = EMPTY;
         }
     }
-    if(checkTreasure(pos)){
+    if(checkEnvironment(pos, TREASURE)){
         environment[pos.y - 1][pos.x - 1] = EMPTY;
         treasureCount--;
     }

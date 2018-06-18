@@ -44,7 +44,7 @@ void setupTreasure(void){
         while(!validPos){
             spawnPos.x = rand() % 80;
             spawnPos.y = rand() % 25;
-            if(checkEmpty(spawnPos)){
+            if(checkEnvironment(spawnPos, EMPTY)){
                 validPos = true;
             }
         }
@@ -64,40 +64,8 @@ bool checkEnemy(struct position pos){
     return true;
 }
 
-bool checkWall(struct position pos){
-    if(environment[pos.y - 1][pos.x - 1] == WALL){
-        return false;
-    } else {
-        return true;
-    }
-}
-
-bool checkHealthPack(struct position pos){
-    if(environment[pos.y - 1][pos.x - 1] == HEALTHPACK){
-        return true;
-    } else {
-        return false;
-    }
-}
-
-bool checkShield(struct position pos){
-    if(environment[pos.y - 1][pos.x - 1] == SHIELD){
-        return true;
-    } else {
-        return false;
-    }
-}
-
-bool checkTreasure(struct position pos){
-    if(environment[pos.y - 1][pos.x - 1] == TREASURE){
-        return true;
-    } else {
-        return false;
-    }
-}
-
-bool checkEmpty(struct position pos){
-    if(environment[pos.y - 1][pos.x - 1] == EMPTY){
+bool checkEnvironment(struct position pos, enum objects obj){
+    if(environment[pos.y - 1][pos.x - 1] == obj){
         return true;
     } else {
         return false;

@@ -41,7 +41,7 @@ void moveEnemy(struct enemy *ptr, enum direction dir){
             nextPos.x--;
             break;
     }
-    if(checkEmpty(nextPos)){
+    if(checkEnvironment(nextPos, EMPTY)){
         ptr->pos = nextPos;
     }
     renderEnemy(ptr);

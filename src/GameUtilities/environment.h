@@ -3,16 +3,13 @@
 
 #include "position.h"
 #include <stdint.h>
+#include "objects.h"
 
 extern uint8_t treasureCount;
 
 void setupTreasure(void);
 void decodeInput(char input[25][82]);
-bool checkWall(struct position pos);
 bool checkEnemy(struct position pos);
-bool checkHealthPack(struct position pos);
-bool checkShield(struct position pos);
-bool checkTreasure(struct position pos);
-bool checkEmpty(struct position pos);
+bool checkEnvironment(struct position pos, enum objects obj);
 
 #endif //DUNGEONCRAWLER_ENVIRONMENT_H
