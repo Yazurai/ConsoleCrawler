@@ -125,6 +125,19 @@ void move(enum direction dir) {
     if(checkEnvironment(pos, TREASURE)){
         environment[pos.y - 1][pos.x - 1] = EMPTY;
         treasureCount--;
+        if(treasureCount == 0){
+            spawnPortal();
+        }
+    }
+    if(checkEnvironment(pos, PORTAL)){
+        setCursorPos(5, 26);
+        printf(" __   _____  _   _ ___   _____  __      _____  _  _ _ ");
+        setCursorPos(5, 27);
+        printf(" \\ \\ / / _ \\| | | ( ) \\ / / __| \\ \\    / / _ \\| \\| | |");
+        setCursorPos(5, 28);
+        printf("  \\ V / (_) | |_| |/ \\ V /| _|   \\ \\/\\/ / (_) | .` |_|");
+        setCursorPos(5, 29);
+        printf("   |_| \\___/ \\___/    \\_/ |___|   \\_/\\_/ \\___/|_|\\_(_)");
     }
     renderPlayer();
 }

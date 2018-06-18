@@ -42,8 +42,8 @@ void setupTreasure(void){
         struct position spawnPos;
         bool validPos = false;
         while(!validPos){
-            spawnPos.x = rand() % 80;
-            spawnPos.y = rand() % 25;
+            spawnPos.x = rand() % 80 + 1;
+            spawnPos.y = rand() % 25 + 1;
             if(checkEnvironment(spawnPos, EMPTY)){
                 validPos = true;
             }
@@ -53,6 +53,23 @@ void setupTreasure(void){
         setFgColor(FG_YELLOW);
         printf("Ж");
     }
+}
+
+void spawnPortal(void){
+    struct position spawnPos;
+    bool validPos = false;
+    while(!validPos){
+        spawnPos.x = rand() % 80;
+        spawnPos.y = rand() % 25;
+        if(checkEnvironment(spawnPos, EMPTY)){
+            validPos = true;
+        }
+    }
+    environment[spawnPos.y - 1][spawnPos.x - 1] = PORTAL;
+    setCursorPos(spawnPos.x, spawnPos.y);
+    setFgColor(FG_MAGENTA);
+    printf("#");
+    setFgColor(FG_WHITE);
 }
 
 bool checkEnemy(struct position pos){
