@@ -23,7 +23,6 @@ void reset_input_mode(void) {
 
 void set_input_mode(void) {
     struct termios tattr;
-    char *name;
 
     /* Make sure stdin is a terminal. */
     if (!isatty(STDIN_FILENO)) {
@@ -38,7 +37,7 @@ void set_input_mode(void) {
     /* Set the funny terminal modes. */
     tcgetattr(STDIN_FILENO, &tattr);
     tattr.c_lflag &= ~(ICANON | ECHO); /* Clear ICANON and ECHO. */
-    tattr.c_cc[VMIN] = 1;
+    tattr.c_cc[VMIN] = 0;
     tattr.c_cc[VTIME] = 0;
     tcsetattr(STDIN_FILENO, TCSAFLUSH, &tattr);
 

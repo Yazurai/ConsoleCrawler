@@ -2,36 +2,36 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <pthread.h>
+#include <stdlib.h>
 #include "position.h"
 #include "UIUtilies.h"
 #include "escCodes.h"
 #include "main.h"
 
+#define TIME_LIMIT 0.5
+
 struct position pos;
 char skin = '@';
 enum fgColor color = FG_WHITE;
 
-void renderPlayer(){
+void renderPlayer() {
     setCursorPos(pos.x, pos.y);
     setFgColor(color);
     printf("%c", skin);
 }
 
-void setPlayer(){
-
-}
-
-void spawnPlayer(uint8_t x, uint8_t y){
+void spawnPlayer(uint8_t x, uint8_t y) {
     pos.x = x;
     pos.y = y;
     renderPlayer();
 }
 
-void move(enum direction dir){
+void move(enum direction dir) {
     struct position nextPos = pos;
     setCursorPos(pos.x, pos.y);  //delete the previous location
     printf(" ");
-    switch (dir){
+    switch (dir) {
         case UP:
             nextPos.y--;
             break;
@@ -45,8 +45,36 @@ void move(enum direction dir){
             nextPos.x--;
             break;
     }
-    if(checkWall(nextPos)){
+    if (checkWall(nextPos)) {
         pos = nextPos;
     }
     renderPlayer();
+}
+
+void *inputThread(void *arg) {
+    char c;
+
+    while (!shouldStop) {
+        c = getchar();
+        switch (c) {
+            case 'w':
+                move(UP);
+                break;
+            case 'a':
+                move(LEFT);
+                break;
+            case 's':
+                move(DOWN);
+                break;
+            case 'd':
+                move(RIGHT);
+                break;
+            case ESCAPE:
+                shouldStop = true;
+                break;
+            default:
+                break;
+        }
+    }
+    return NULL;
 }
