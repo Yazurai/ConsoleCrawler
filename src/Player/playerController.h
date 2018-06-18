@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include "position.h"
 
+void burn(void);
 void spawnPlayer(uint8_t x, uint8_t y);
 void move(enum direction dir);
 

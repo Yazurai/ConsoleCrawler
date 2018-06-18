@@ -32,6 +32,14 @@ void decodeInput(char input[25][82]) {
                     printf("■");
                     setFgColor(FG_WHITE);
                     break;
+                case 'L':
+                    environment[i][j] = LAVA;
+                    setBgColor(BG_RED);
+                    setFgColor(FG_BLACK);
+                    printf("#");
+                    setBgColor(BG_BLACK);
+                    setFgColor(FG_WHITE);
+                    break;
             }
         }
     }

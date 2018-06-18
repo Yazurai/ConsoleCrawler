@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <pthread.h>
+#include "playerController.h"
 #include "position.h"
 #include "UIUtilies.h"
 #include "main.h"
@@ -57,6 +58,8 @@ void *updateEnemyThread(void *arg){
             clock_t difference = clock() - prevTime;
             msec = difference * 1000 / CLOCKS_PER_SEC;
         } while (msec < 1000);
+
+        burn();
 
         for (int i = 0; i < 20; ++i) {
             uint8_t random = rand() % 4;
