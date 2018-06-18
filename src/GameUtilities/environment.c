@@ -6,6 +6,8 @@
 #include "objects.h"
 #include "main.h"
 
+uint8_t treasureCount = 10;
+
 void decodeInput(char input[25][82]) {
     setBgColor(BG_BLACK);
     for (uint8_t i = 0; i <= 25; ++i) {
@@ -32,6 +34,24 @@ void decodeInput(char input[25][82]) {
                     break;
             }
         }
+    }
+}
+
+void setupTreasure(void){
+    for (int i = 0; i < 10; ++i) {
+        struct position spawnPos;
+        bool validPos = false;
+        while(!validPos){
+            spawnPos.x = rand() % 80;
+            spawnPos.y = rand() % 25;
+            if(checkEmpty(spawnPos)){
+                validPos = true;
+            }
+        }
+        environment[spawnPos.y - 1][spawnPos.x - 1] = TREASURE;
+        setCursorPos(spawnPos.x, spawnPos.y);
+        setFgColor(FG_YELLOW);
+        printf("Ж");
     }
 }
 
@@ -62,6 +82,22 @@ bool checkHealthPack(struct position pos){
 
 bool checkShield(struct position pos){
     if(environment[pos.y - 1][pos.x - 1] == SHIELD){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool checkTreasure(struct position pos){
+    if(environment[pos.y - 1][pos.x - 1] == TREASURE){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool checkEmpty(struct position pos){
+    if(environment[pos.y - 1][pos.x - 1] == EMPTY){
         return true;
     } else {
         return false;

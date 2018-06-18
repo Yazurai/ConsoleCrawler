@@ -40,6 +40,9 @@ void main(int argc, char **argv) {
     //setup player
     spawnPlayer(3,3);
 
+    //setup treasures
+    setupTreasure();
+
     //setup enemies
     for (int j = 0; j < 20; ++j) {
         bool goodPos = false;
@@ -50,7 +53,7 @@ void main(int argc, char **argv) {
             if(startPos.x > 5 || startPos.y > 5){
                 goodPos = true;
             }
-            if(!checkWall(startPos)){
+            if(!checkEmpty(startPos)){
                 goodPos = false;
             }
         }

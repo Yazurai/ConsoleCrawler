@@ -26,16 +26,24 @@ void renderPlayer() {
     }
     setFgColor(color);
     printf("%c", skin);
+
     setCursorPos(84, 4);
     printf("           ");
     setFgColor(FG_RED);
     setBgColor(BG_BLACK);
     setCursorPos(84, 4);
     printf("HEALTH: %i", health);
+
     setCursorPos(84, 6);
     setFgColor(FG_CYAN);
     printf("SHIELD STATUS: ");
     printf(shield ? "ON " : "OFF");
+
+    setCursorPos(84, 8);
+    printf("                  ");
+    setCursorPos(84, 8);
+    setFgColor(FG_WHITE);
+    printf("TREASURES LEFT: %d", treasureCount);
 }
 
 void spawnPlayer(uint8_t x, uint8_t y) {
@@ -113,6 +121,10 @@ void move(enum direction dir) {
             shield = true;
             environment[pos.y - 1][pos.x - 1] = EMPTY;
         }
+    }
+    if(checkTreasure(pos)){
+        environment[pos.y - 1][pos.x - 1] = EMPTY;
+        treasureCount--;
     }
     renderPlayer();
 }

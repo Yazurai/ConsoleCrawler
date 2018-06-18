@@ -26,13 +26,7 @@ void renderEnemy(struct enemy *ptr){
 void moveEnemy(struct enemy *ptr, enum direction dir){
     struct position nextPos = ptr->pos;
     setCursorPos(ptr->pos.x, ptr->pos.y);  //set the previous location
-    if(checkHealthPack(ptr->pos)){
-        setFgColor(FG_GREEN);
-        printf("¤");
-        setFgColor(FG_WHITE);
-    } else {
-        printf(" ");
-    }
+    printf(" ");
     switch (dir){
         case UP:
             nextPos.y--;
@@ -47,7 +41,7 @@ void moveEnemy(struct enemy *ptr, enum direction dir){
             nextPos.x--;
             break;
     }
-    if(checkWall(nextPos)){
+    if(checkEmpty(nextPos)){
         ptr->pos = nextPos;
     }
     renderEnemy(ptr);
