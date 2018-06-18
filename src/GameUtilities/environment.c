@@ -16,11 +16,19 @@ void decodeInput(char input[25][82]) {
                     environment[i][j] = WALL;
                     setFgColor(FG_WHITE);
                     printf("O");
+                    setFgColor(FG_WHITE);
                     break;
                 case 'H':
                     environment[i][j] = HEALTHPACK;
                     setFgColor(FG_GREEN);
                     printf("¤");
+                    setFgColor(FG_WHITE);
+                    break;
+                case 'S':
+                    environment[i][j] = SHIELD;
+                    setFgColor(FG_CYAN);
+                    printf("■");
+                    setFgColor(FG_WHITE);
                     break;
             }
         }
@@ -46,6 +54,14 @@ bool checkWall(struct position pos){
 
 bool checkHealthPack(struct position pos){
     if(environment[pos.y - 1][pos.x - 1] == HEALTHPACK){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool checkShield(struct position pos){
+    if(environment[pos.y - 1][pos.x - 1] == SHIELD){
         return true;
     } else {
         return false;
