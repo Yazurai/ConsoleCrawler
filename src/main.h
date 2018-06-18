@@ -8,5 +8,6 @@ extern struct enemy enemies[20];
 extern bool shouldStop;
 
 bool checkWall(struct position pos);
+bool checkEnemy(struct position pos);
 
 #endif //DUNGEONCRAWLER_MAIN_H

@@ -3,18 +3,7 @@
 #include "list.h"
 #include "objects.h"
 
-struct elem{
-    enum objects obj;
-    struct elem *prev;
-    struct elem *next;
-};
-
-struct list{
-    struct elem *first;
-    struct elem *last;
-};
-
-struct elem *initElem(){
+struct elem *initElem(void){
     struct elem *e = malloc(sizeof(struct elem));
     e->obj = EMPTY;
     e->prev = NULL;
@@ -22,7 +11,7 @@ struct elem *initElem(){
     return e;
 }
 
-struct list *initList(){
+struct list *initList(void){
     struct list *l = malloc(sizeof(struct list));
     l->first = initElem();
     l->last = initElem();

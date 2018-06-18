@@ -12,11 +12,22 @@
 #include "playerController.h"
 #include "setupUI.h"
 #include "Enemy/enemy.h"
+#include "objects.h"
+#include "List/list.h"
 
-char walls[30][100];
+struct list *environment[25][80];
+char walls[25][82];
 struct enemy enemies[20];
 bool shouldStop = false;
 pthread_t threads[2];
+
+void initEnv(void){
+    for (int i = 0; i < 25; ++i) {
+        for (int j = 0; j < 80; ++j) {
+            environment[i][j] = initList();
+        }
+    }
+}
 
 void renderWalls(void) {
     setBgColor(BG_BLACK);
@@ -24,10 +35,20 @@ void renderWalls(void) {
         for (uint8_t j = 0; j <= 80; ++j) {
             setCursorPos(j + 1, i + 1);
             if (walls[i][j] == 'X') {
+                //add(environment[i][j], WALL);
                 printf("O");
             }
         }
     }
+}
+
+bool checkEnemy(struct position pos){
+    for (int i = 0; i < 20; ++i) {
+        if(enemies[i].pos.x == pos.x && enemies[i].pos.y == pos.y){
+            return false;
+        }
+    }
+    return true;
 }
 
 bool checkWall(struct position pos){

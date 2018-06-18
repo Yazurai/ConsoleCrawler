@@ -9,8 +9,7 @@
 #include "escCodes.h"
 #include "main.h"
 
-#define TIME_LIMIT 0.5
-
+int8_t health = 100;
 struct position pos;
 char skin = '@';
 enum fgColor color = FG_WHITE;
@@ -19,6 +18,11 @@ void renderPlayer() {
     setCursorPos(pos.x, pos.y);
     setFgColor(color);
     printf("%c", skin);
+    setCursorPos(84, 4);
+    printf("           ");
+    setCursorPos(84, 4);
+    setFgColor(FG_RED);
+    printf("HEALTH: %i", health);
 }
 
 void spawnPlayer(uint8_t x, uint8_t y) {
@@ -47,6 +51,19 @@ void move(enum direction dir) {
     }
     if (checkWall(nextPos)) {
         pos = nextPos;
+    }
+    if (!checkEnemy(pos)){
+        health -= 10;
+        if(health == 0){
+            setCursorPos(5, 26);
+            printf("__   _____  _   _ _ ___ ___   ___  ___   _   ___  _");
+            setCursorPos(5, 27);
+            printf("\\ \\ / / _ \\| | | ( ) _ \\ __| |   \\| __| /_\\ |   \\| |");
+            setCursorPos(5, 28);
+            printf(" \\ V / (_) | |_| |/|   / _|  | |) | _| / _ \\| |) |_|");
+            setCursorPos(5, 29);
+            printf("  |_| \\___/ \\___/  |_|_\\___| |___/|___/_/ \\_\\___/(_)");
+        }
     }
     renderPlayer();
 }
