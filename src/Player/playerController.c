@@ -19,48 +19,47 @@ char skin = '@';
 enum fgColor color = FG_WHITE;
 
 void renderPlayer(void) {
-    setCursorPos(pos.x, pos.y);
+    bgColor bgC = BG_BLACK;
     if (shield) {
-        setBgColor(BG_CYAN);
-    } else {
-        if (burning > 0) {
-            setBgColor(BG_RED);
-        } else {
-            setBgColor(BG_BLACK);
-        }
+        bgC = BG_CYAN;
+    } else if (burning > 0) {
+        bgC = BG_RED;
     }
 
-    setFgColor(color);
-    printf("%c", skin);
-    setBgColor(BG_BLACK);
+    print(pos, color, bgC, &skin);
+    position textPos = {.x = 84, .y = 4};
 
-    setCursorPos(84, 4);
-    printf("           ");
-    setFgColor(FG_RED);
-    setBgColor(BG_BLACK);
-    setCursorPos(84, 4);
-    printf("HEALTH: %i", health);
+    textPos = (position) {.x = 84, .y = 4};
+    print(textPos, FG_WHITE, BG_BLACK, "                    ");
+    textPos = (position) {.x = 84, .y = 6};
+    print(textPos, FG_WHITE, BG_BLACK, "                    ");
+    textPos = (position) {.x = 84, .y = 8};
+    print(textPos, FG_WHITE, BG_BLACK, "                    ");
 
-    setCursorPos(84, 6);
-    setFgColor(FG_CYAN);
-    printf("SHIELD STATUS: ");
-    printf(shield ? "ON " : "OFF");
+    textPos = (position) {.x = 84, .y = 4};
+    print(textPos, FG_RED, BG_BLACK, "HEALTH: ");
+    char uiText[5];
+    sprintf(uiText, "%d", health);
+    textPos = (position) {.x = 92, .y = 4};
+    print(textPos, FG_RED, BG_BLACK, uiText);
 
-    setCursorPos(84, 8);
-    printf("                  ");
-    setCursorPos(84, 8);
-    setFgColor(FG_WHITE);
-    printf("TREASURES LEFT: %d", treasureCount);
+    textPos = (position) {.x = 84, .y = 6};
+    print(textPos, FG_CYAN, BG_BLACK, "SHIELD STATUS: ");
+    textPos = (position) {.x = 99, .y = 6};
+    print(textPos, FG_CYAN, BG_BLACK, shield ? "ON " : "OFF");
+
+    textPos = (position) {.x = 84, .y = 8};
+    print(textPos, FG_WHITE, BG_BLACK, "TREASURES LEFT: ");
+    textPos = (position) {.x = 100, .y = 8};
+    sprintf(uiText, "%d", treasureCount);
+    print(textPos, FG_WHITE, BG_BLACK, uiText);
 
     if (burning > 0) {
-        setCursorPos(84, 10);
-        setBgColor(BG_RED);
-        setFgColor(FG_WHITE);
-        printf("BURNING!");
-        setBgColor(BG_BLACK);
+        textPos = (position) {.x = 84, .y = 10};
+        print(textPos, FG_WHITE, BG_RED, "BURNING!");
     } else {
-        setCursorPos(84, 10);
-        printf("        ");
+        textPos = (position) {.x = 84, .y = 10};
+        print(textPos, FG_WHITE, BG_BLACK, "        ");
     }
 }
 
@@ -82,36 +81,20 @@ void burn(void) {
 }
 
 void move(enum direction dir) {
-    struct position nextPos = pos;
-    setCursorPos(pos.x, pos.y);  //set the previous location
+    position previousPos = pos;
     if (checkEnvironment(pos, LAVA)) {
-        setBgColor(BG_RED);
-        setFgColor(FG_BLACK);
-        printf("#");
-        setBgColor(BG_BLACK);
-        setFgColor(FG_WHITE);
+        print(previousPos, FG_BLACK, BG_RED, "#");
+    } else if (checkEnvironment(pos, SHIELD)) {
+        print(previousPos, FG_CYAN, BG_BLACK, "■");
+    } else if (checkEnvironment(pos, HEALTHPACK)) {
+        print(previousPos, FG_GREEN, BG_BLACK, "¤");
+    } else if (!checkEnemy(pos)) {
+        print(previousPos, FG_RED, BG_BLACK, "X");
     } else {
-        if (checkEnvironment(pos, SHIELD)) {
-            setFgColor(FG_CYAN);
-            printf("■");
-            setFgColor(FG_WHITE);
-        } else {
-            if (checkEnvironment(pos, HEALTHPACK)) {
-                setFgColor(FG_GREEN);
-                printf("¤");
-                setFgColor(FG_WHITE);
-            } else {
-                if (!checkEnemy(pos)) {
-                    setFgColor(FG_RED);
-                    printf("X");
-                    setFgColor(FG_WHITE);
-                } else {
-                    printf(" ");
-                }
-            }
-        }
+        print(previousPos, FG_BLACK, BG_BLACK, " ");
     }
 
+    position nextPos = pos;
     switch (dir) {
         case UP:
             nextPos.y--;
@@ -126,44 +109,58 @@ void move(enum direction dir) {
             nextPos.x--;
             break;
     }
-    if (!checkEnvironment(nextPos, WALL)) {
+    if (!
+            checkEnvironment(nextPos, WALL
+            )) {
         pos = nextPos;
     }
-    if (!checkEnemy(pos)) {
+    if (!
+            checkEnemy(pos)
+            ) {
         if (!shield) {
             health -= 10;
             if (health == 0) {
-                setCursorPos(5, 26);
-                printf("__   _____  _   _ _ ___ ___   ___  ___   _   ___  _");
-                setCursorPos(5, 27);
-                printf("\\ \\ / / _ \\| | | ( ) _ \\ __| |   \\| __| /_\\ |   \\| |");
-                setCursorPos(5, 28);
-                printf(" \\ V / (_) | |_| |/|   / _|  | |) | _| / _ \\| |) |_|");
-                setCursorPos(5, 29);
-                printf("  |_| \\___/ \\___/  |_|_\\___| |___/|___/_/ \\_\\___/(_)");
+                position textPos = {15, 14};
+                print(textPos, FG_WHITE, BG_BLACK, "__   _____  _   _ _ ___ ___   ___  ___   _   ___  _");
+                textPos = (position) {15, 15};
+                print(textPos, FG_WHITE, BG_BLACK, "\\ \\ / / _ \\| | | ( ) _ \\ __| |   \\| __| /_\\ |   \\| |");
+                textPos = (position) {15, 16};;
+                print(textPos, FG_WHITE, BG_BLACK, " \\ V / (_) | |_| |/|   / _|  | |) | _| / _ \\| |) |_|");
+                textPos = (position) {15, 17};
+                print(textPos, FG_WHITE, BG_BLACK, "  |_| \\___/ \\___/  |_|_\\___| |___/|___/_/ \\_\\___/(_)");
             }
         } else {
             shield = false;
         }
     }
-    if (checkEnvironment(pos, HEALTHPACK)) {
+    if (
+            checkEnvironment(pos, HEALTHPACK
+            )) {
         if (health < 100) {
             health += 10;
             health = (health > 100) ? 100 : health;
-            environment[pos.y - 1][pos.x - 1] = EMPTY;
+            environment[pos.y - 1][pos.x - 1] =
+                    EMPTY;
         }
     }
-    if (checkEnvironment(pos, SHIELD)) {
+    if (
+            checkEnvironment(pos, SHIELD
+            )) {
         if (!shield) {
             shield = true;
-            environment[pos.y - 1][pos.x - 1] = EMPTY;
+            environment[pos.y - 1][pos.x - 1] =
+                    EMPTY;
         }
     }
-    if (checkEnvironment(pos, TREASURE)) {
-        environment[pos.y - 1][pos.x - 1] = EMPTY;
+    if (
+            checkEnvironment(pos, TREASURE
+            )) {
+        environment[pos.y - 1][pos.x - 1] =
+                EMPTY;
         treasureCount--;
         if (treasureCount == 0) {
             spawnPortal();
+
         }
     }
     if (checkEnvironment(pos, LAVA)) {
@@ -174,15 +171,16 @@ void move(enum direction dir) {
         }
     }
     if (checkEnvironment(pos, PORTAL)) {
-        setCursorPos(5, 26);
-        printf(" __   _____  _   _ ___   _____  __      _____  _  _ _ ");
-        setCursorPos(5, 27);
-        printf(" \\ \\ / / _ \\| | | ( ) \\ / / __| \\ \\    / / _ \\| \\| | |");
-        setCursorPos(5, 28);
-        printf("  \\ V / (_) | |_| |/ \\ V /| _|   \\ \\/\\/ / (_) | .` |_|");
-        setCursorPos(5, 29);
-        printf("   |_| \\___/ \\___/    \\_/ |___|   \\_/\\_/ \\___/|_|\\_(_)");
+        position textPos = {15, 14};
+        print(textPos, FG_WHITE, BG_BLACK, " __   _____  _   _ ___   _____  __      _____  _  _ _ ");
+        textPos = (position){15, 15};
+        print(textPos, FG_WHITE, BG_BLACK, " \\ \\ / / _ \\| | | ( ) \\ / / __| \\ \\    / / _ \\| \\| | |");
+        textPos = (position){15, 16};;
+        print(textPos, FG_WHITE, BG_BLACK, "  \\ V / (_) | |_| |/ \\ V /| _|   \\ \\/\\/ / (_) | .` |_|");
+        textPos = (position){15, 17};
+        print(textPos, FG_WHITE, BG_BLACK, "   |_| \\___/ \\___/    \\_/ |___|   \\_/\\_/ \\___/|_|\\_(_)");
     }
+
     renderPlayer();
 }
 
@@ -213,3 +211,4 @@ void *inputThread(void *arg) {
     }
     return NULL;
 }
+

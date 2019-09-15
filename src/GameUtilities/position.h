@@ -3,13 +3,13 @@
 
 #include <stdint.h>
 
-struct position{
+typedef struct position{
     uint8_t x;
     uint8_t y;
-};
+} position;
 
-enum direction{
+typedef enum direction{
     UP = 65, RIGHT = 67, DOWN = 66, LEFT = 68
-};
+} direction;
 
 #endif //DUNGEONCRAWLER_POSITION_H

@@ -1,13 +1,10 @@
 #include <unistd.h>
 #include <stdio.h>
-#include <stdint.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <termios.h>
 #include <time.h>
 #include <pthread.h>
 #include "UI/escCodes.h"
-#include "UIUtilies.h"
 #include "position.h"
 #include "playerController.h"
 #include "setupUI.h"
@@ -19,19 +16,28 @@ enum objects environment[25][80];
 struct enemy enemies[20];
 bool shouldStop = false;
 
-void main(int argc, char **argv) {
-    set_input_mode();   //start the input
-    srand(time(NULL));   // set random seed
+int main(int argc, char **argv) {
+    setInputMode();   //start the input
+    srand(time(0));   // set random seed
     printf("%c[=3h", ESCAPE); //set the canvas to 25x80
 
     //Read in the environment info: walls
     FILE *wallsFile;
     char input[25][82];
-    wallsFile = fopen(argv[1], "r");
+    char *filename;
+    if(argc > 1){
+        filename = argv[0];
+    } else {
+        filename = "environment.txt";
+    }
+    wallsFile = fopen(filename, "r");
+    if(wallsFile == NULL){
+        printf("No environment file!");
+        return 1;
+    }
     for (int i = 0; i < 25; ++i) {
         fgets(input[i], 100, wallsFile);
     }
-
     fclose(wallsFile);
 
     //setup walls
@@ -44,7 +50,7 @@ void main(int argc, char **argv) {
     setupTreasure();
 
     //setup enemies
-    for (int j = 0; j < 20; ++j) {
+    for (int j = 0; j < 1; ++j) {
         bool goodPos = false;
         struct position startPos = {0, 0};
         while(!goodPos){
@@ -57,9 +63,8 @@ void main(int argc, char **argv) {
                 goodPos = false;
             }
         }
-        newEnemy(&enemies[j], startPos, 'X');
+        newEnemy(&enemies[j], startPos, "X");
     }
-
     pthread_t threads[2];
 
     pthread_create(&threads[1], NULL, inputThread, NULL);

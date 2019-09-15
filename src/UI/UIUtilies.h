@@ -4,16 +4,14 @@
 #include <stdint.h>
 #include <windows.h>
 #include "escCodes.h"
+#include "position.h"
 
 struct screenPos{
     uint8_t  x;
     uint8_t  y;
 };
 
-void setCursorPos(uint8_t x, uint8_t y);
-
-void setFgColor(enum fgColor color);
-void setBgColor(enum bgColor color);
+void print(position pos, fgColor fgC, bgColor bgC, char *text);
 
 BOOL keyPressed(void);
 

@@ -2,10 +2,9 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "setupUI.h"
 #include <windows.h>
 
-void hidecursor()
+void hideCursor()
 {
     HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_CURSOR_INFO info;
@@ -15,32 +14,32 @@ void hidecursor()
 }
 
 //Use this variable to remember original terminal attributes.
-struct termios saved_attributes;
+struct termios savedAttributes;
 
-void reset_input_mode(void) {
-    tcsetattr(STDIN_FILENO, TCSANOW, &saved_attributes);
+void resetInputMode(void) {
+    tcsetattr(STDIN_FILENO, TCSANOW, &savedAttributes);
 }
 
-void set_input_mode(void) {
+void setInputMode(void) {
     struct termios tattr;
 
-    /* Make sure stdin is a terminal. */
+    // Make sure stdin is a terminal.
     if (!isatty(STDIN_FILENO)) {
         fprintf(stderr, "Not a terminal.\n");
         exit(EXIT_FAILURE);
     }
 
-    /* Save the terminal attributes so we can restore them later. */
-    tcgetattr(STDIN_FILENO, &saved_attributes);
-    atexit(reset_input_mode);
+    // Save the terminal attributes so we can restore them later. 
+    tcgetattr(STDIN_FILENO, &savedAttributes);
+    atexit(resetInputMode);
 
-    /* Set the funny terminal modes. */
+    // Set the funny terminal modes. 
     tcgetattr(STDIN_FILENO, &tattr);
-    tattr.c_lflag &= ~(ICANON | ECHO); /* Clear ICANON and ECHO. */
+    tattr.c_lflag &= ~(ICANON | ECHO); // Clear ICANON and ECHO.
     tattr.c_cc[VMIN] = 0;
     tattr.c_cc[VTIME] = 0;
     tcsetattr(STDIN_FILENO, TCSAFLUSH, &tattr);
 
     //hide cursor
-    hidecursor();
+    hideCursor();
 }
