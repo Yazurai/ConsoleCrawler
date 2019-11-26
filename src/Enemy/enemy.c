@@ -3,11 +3,11 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <time.h>
-#include "playerController.h"
-#include "position.h"
-#include "UIUtilies.h"
+#include "Player/playerController.h"
+#include "GameUtilities/position.h"
+#include "UI/UIUtilies.h"
 #include "main.h"
-#include "environment.h"
+#include "GameUtilities/environment.h"
 
 void newEnemy(struct enemy *ptr, struct position pos, char *skin){
     ptr->skin = skin;

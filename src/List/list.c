@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "list.h"
-#include "objects.h"
+#include "GameUtilities/objects.h"
 
 struct elem *initElem(void){
     struct elem *e = malloc(sizeof(struct elem));

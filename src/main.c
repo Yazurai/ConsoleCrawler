@@ -5,12 +5,12 @@
 #include <time.h>
 #include <pthread.h>
 #include "UI/escCodes.h"
-#include "position.h"
-#include "playerController.h"
-#include "setupUI.h"
+#include "GameUtilities/position.h"
+#include "Player/playerController.h"
+#include "UI/setupUI.h"
 #include "Enemy/enemy.h"
-#include "objects.h"
-#include "environment.h"
+#include "GameUtilities/objects.h"
+#include "GameUtilities/environment.h"
 
 enum objects environment[25][80];
 struct enemy enemies[20];
@@ -65,13 +65,14 @@ int main(int argc, char **argv) {
         }
         newEnemy(&enemies[j], startPos, "X");
     }
+    
     pthread_t threads[2];
 
     pthread_create(&threads[1], NULL, inputThread, NULL);
     pthread_create(&threads[0], NULL, updateEnemyThread, NULL);
 
-    pthread_join(threads[0], NULL);
-    pthread_join(threads[1], NULL);
+    //pthread_join(threads[0], NULL);
+    //pthread_join(threads[1], NULL);
 }
 
 

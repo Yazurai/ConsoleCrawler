@@ -1,9 +1,10 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 #include "tickBox.h"
-#include "UIUtilies.h"
-#include "escCodes.h"
+#include "UI/UIUtilies.h"
+#include "UI/escCodes.h"
 
 struct tickBox{
     struct screenPos pos;

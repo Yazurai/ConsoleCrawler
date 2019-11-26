@@ -1,7 +1,7 @@
 #ifndef DUNGEONCRAWLER_LIST_H
 #define DUNGEONCRAWLER_LIST_H
 
-#include "objects.h"
+#include "GameUtilities/objects.h"
 
 struct elem{
     enum objects obj;

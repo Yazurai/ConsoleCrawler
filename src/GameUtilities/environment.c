@@ -1,9 +1,10 @@
 #include <UI/UIUtilies.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "Enemy/enemy.h"
-#include "environment.h"
-#include "objects.h"
+#include "GameUtilities/environment.h"
+#include "GameUtilities/objects.h"
 #include "main.h"
 
 uint8_t treasureCount = 10;

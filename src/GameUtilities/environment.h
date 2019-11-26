@@ -1,9 +1,9 @@
 #ifndef DUNGEONCRAWLER_ENVIRONMENT_H
 #define DUNGEONCRAWLER_ENVIRONMENT_H
 
-#include "position.h"
+#include "GameUtilities/position.h"
 #include <stdint.h>
-#include "objects.h"
+#include "GameUtilities/objects.h"
 
 extern uint8_t treasureCount;
 

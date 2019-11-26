@@ -4,12 +4,12 @@
 #include <stdio.h>
 #include <pthread.h>
 #include <stdlib.h>
-#include "position.h"
-#include "UIUtilies.h"
-#include "escCodes.h"
+#include "GameUtilities/position.h"
+#include "UI/UIUtilies.h"
+#include "UI/escCodes.h"
 #include "main.h"
-#include "objects.h"
-#include "environment.h"
+#include "GameUtilities/objects.h"
+#include "GameUtilities/environment.h"
 
 uint8_t burning = 0;
 bool shield = false;

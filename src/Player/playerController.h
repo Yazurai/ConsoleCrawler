@@ -2,8 +2,7 @@
 #define DUNGEONCRAWLER_PLAYERCONTROLLER_H
 
 #include <stdint.h>
-#include "position.h"
-
+#include "GameUtilities/position.h"
 void burn(void);
 void spawnPlayer(uint8_t x, uint8_t y);
 void move(enum direction dir);

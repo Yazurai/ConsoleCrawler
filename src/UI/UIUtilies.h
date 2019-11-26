@@ -2,9 +2,9 @@
 #define UNTITLED_UIUTILIES_H
 
 #include <stdint.h>
-#include <windows.h>
-#include "escCodes.h"
-#include "position.h"
+#include <stdbool.h> 
+#include "UI/escCodes.h"
+#include "GameUtilities/position.h"
 
 struct screenPos{
     uint8_t  x;
@@ -12,7 +12,5 @@ struct screenPos{
 };
 
 void print(position pos, fgColor fgC, bgColor bgC, char *text);
-
-BOOL keyPressed(void);
 
 #endif //UNTITLED_UIUTILIES_H

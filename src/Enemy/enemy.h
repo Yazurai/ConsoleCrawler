@@ -1,7 +1,7 @@
 #ifndef DUNGEONCRAWLER_ENEMY_H
 #define DUNGEONCRAWLER_ENEMY_H
 
-#include "position.h"
+#include "GameUtilities/position.h"
 
 struct enemy{
     position pos;
