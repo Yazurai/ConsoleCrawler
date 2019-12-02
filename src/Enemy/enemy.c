@@ -3,25 +3,29 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <time.h>
-#include "Player/playerController.h"
-#include "GameUtilities/position.h"
-#include "UI/UIUtilies.h"
+#include "playerController.h"
+#include "position.h"
+#include "UIUtilies.h"
 #include "main.h"
-#include "GameUtilities/environment.h"
+#include "environment.h"
 
-void newEnemy(struct enemy *ptr, struct position pos, char *skin){
+void newEnemy(struct enemy *ptr, struct position pos, char skin){
     ptr->skin = skin;
     ptr->pos = pos;
     renderEnemy(ptr);
 }
 
 void renderEnemy(struct enemy *ptr){
-    print(ptr->pos, FG_RED, BG_BLACK, ptr->skin);
+    setCursorPos(ptr->pos.x, ptr->pos.y);
+    setFgColor(FG_RED);
+    printf("%c", ptr->skin);
+    setFgColor(FG_WHITE);
 }
 
 void moveEnemy(struct enemy *ptr, enum direction dir){
     struct position nextPos = ptr->pos;
-    print(ptr->pos, FG_WHITE, BG_BLACK, " ");
+    setCursorPos(ptr->pos.x, ptr->pos.y);  //set the previous location
+    printf(" ");
     switch (dir){
         case UP:
             nextPos.y--;
@@ -34,8 +38,6 @@ void moveEnemy(struct enemy *ptr, enum direction dir){
             break;
         case LEFT:
             nextPos.x--;
-            break;
-        default:
             break;
     }
     if(checkEnvironment(nextPos, EMPTY)){
@@ -76,7 +78,7 @@ void *updateEnemyThread(void *arg){
                     break;
             }
         }
-        //setCursorPos(10, 26);
+        setCursorPos(10, 26);
     }
     return NULL;
 }

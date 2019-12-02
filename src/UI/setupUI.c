@@ -3,51 +3,44 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <windows.h>
 
-#define ABUF_INIT {NULL, 0}
+void hidecursor()
+{
+    HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_CURSOR_INFO info;
+    info.dwSize = 100;
+    info.bVisible = FALSE;
+    SetConsoleCursorInfo(consoleHandle, &info);
+}
 
 //Use this variable to remember original terminal attributes.
-struct termios savedAttributes;
+struct termios saved_attributes;
 
-struct abuf {
-  char *b;
-  int len;
-};
-
-void disableRawMode() {
-    tcsetattr(STDIN_FILENO, TCSANOW, &savedAttributes);
-}
-
-void enableRawMode() {
-    tcgetattr(STDIN_FILENO, &savedAttributes);
-    atexit(disableRawMode);
-    struct termios raw = savedAttributes;
-    raw.c_iflag &= ~(IXON);
-    raw.c_oflag &= ~(OPOST);
-    raw.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);  
-    tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
-}
-
-void abAppend(struct abuf *ab, const char *s, int len) {
-    char *new = realloc(ab->b, ab->len + len);
-    if (new == NULL) return;
-    memcpy(&new[ab->len], s, len);
-    ab->b = new;
-    ab->len += len;
+void resetInputMode(void) {
+    tcsetattr(STDIN_FILENO, TCSANOW, &saved_attributes);
 }
 
 void setInputMode(void) {
     struct termios tattr;
 
-    // Make sure stdin is a terminal.
+    /* Make sure stdin is a terminal. */
     if (!isatty(STDIN_FILENO)) {
         fprintf(stderr, "Not a terminal.\n");
         exit(EXIT_FAILURE);
     }
 
-    enableRawMode();
+    /* Save the terminal attributes so we can restore them later. */
+    tcgetattr(STDIN_FILENO, &saved_attributes);
+    atexit(resetInputMode);
+
+    /* Set the funny terminal modes. */
+    tcgetattr(STDIN_FILENO, &tattr);
+    tattr.c_lflag &= ~(ICANON | ECHO); /* Clear ICANON and ECHO. */
+    tattr.c_cc[VMIN] = 0;
+    tattr.c_cc[VTIME] = 0;
+    tcsetattr(STDIN_FILENO, TCSAFLUSH, &tattr);
 
     //hide cursor
-    struct abuf ab = ABUF_INIT;
-    abAppend(&ab, "\x1b[?25l", 6);
+    hidecursor();
 }

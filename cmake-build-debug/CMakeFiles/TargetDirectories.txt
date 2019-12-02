@@ -1,0 +1,3 @@
+/cygdrive/x/WORK/UNIVERSITY/ConsoleCrawler/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/cygdrive/x/WORK/UNIVERSITY/ConsoleCrawler/cmake-build-debug/CMakeFiles/ConsoleCrawler.dir
+/cygdrive/x/WORK/UNIVERSITY/ConsoleCrawler/cmake-build-debug/CMakeFiles/edit_cache.dir

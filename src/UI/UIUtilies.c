@@ -2,17 +2,17 @@
 #include "GameUtilities/position.h"
 #include <stdint.h>
 #include <stdio.h>
+#include <windows.h>
 
-void setCursorPosition(position pos){
-
-    printf("%c[%d;%dH", ESCAPE, pos.y, pos.x);
+void setCursorPos(uint8_t x, uint8_t y){
+    printf("%c[%d;%dH", ESCAPE, y, x);
 }
 
-void setFgColor(fgColor color){
+void setFgColor(enum fgColor color){
     printf("%c[%dm", ESCAPE, color);
 }
 
-void setBgColor(bgColor color){
+void setBgColor(enum bgColor color){
     printf("%c[%dm", ESCAPE, color);
 }
 
@@ -20,19 +20,8 @@ void moveCursor(enum direction dir, uint8_t amount){
     printf("%c[%d%c", ESCAPE, amount, dir);
 }
 
-void resetColors(){
-    setBgColor(BG_BLACK);
-    setFgColor(FG_WHITE);
-}
-
-void print(position pos, fgColor fgC, bgColor bgC, char *text){
-    if(text != NULL) {
-        setCursorPosition(pos);
-        setBgColor(bgC);
-        setFgColor(fgC);
-        printf("%s", text);
-        resetColors();
-    } else {
-
-    }
+BOOL keyPressed(void) {
+    for(int i = 0; i<256; i++)
+        if(GetAsyncKeyState(i) >> 8) return 1;
+    return 0;
 }

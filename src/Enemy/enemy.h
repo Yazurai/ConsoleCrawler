@@ -4,11 +4,11 @@
 #include "GameUtilities/position.h"
 
 struct enemy{
-    position pos;
-    char *skin;
+    struct position pos;
+    char skin;
 };
 
-void newEnemy(struct enemy *ptr, struct position pos, char *skin);
+void newEnemy(struct enemy *ptr, struct position pos, char skin);
 
 void renderEnemy(struct enemy *ptr);
 

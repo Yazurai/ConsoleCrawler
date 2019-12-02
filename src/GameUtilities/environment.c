@@ -10,27 +10,36 @@
 uint8_t treasureCount = 10;
 
 void decodeInput(char input[25][82]) {
-    for (uint8_t y = 0; y <= 25; ++y) {
-        for (uint8_t x = 0; x <= 80; ++x) {
-            position pos;
-            pos.x = x + 1;
-            pos.y = y + 1;
-            switch (input[y][x]){
+    setBgColor(BG_BLACK);
+    for (uint8_t i = 0; i <= 25; ++i) {
+        for (uint8_t j = 0; j <= 80; ++j) {
+            setCursorPos(j + 1, i + 1);
+            switch (input[i][j]){
                 case 'X':
-                    environment[y][x] = WALL;
-                    print(pos, FG_WHITE, BG_BLACK, "O");
+                    environment[i][j] = WALL;
+                    setFgColor(FG_WHITE);
+                    printf("O");
+                    setFgColor(FG_WHITE);
                     break;
                 case 'H':
-                    environment[y][x] = HEALTHPACK;
-                    print(pos, FG_GREEN, BG_BLACK, "+");
+                    environment[i][j] = HEALTHPACK;
+                    setFgColor(FG_GREEN);
+                    printf("¤");
+                    setFgColor(FG_WHITE);
                     break;
                 case 'S':
-                    environment[y][x] = SHIELD;
-                    print(pos, FG_CYAN, BG_BLACK, "■");
+                    environment[i][j] = SHIELD;
+                    setFgColor(FG_CYAN);
+                    printf("■");
+                    setFgColor(FG_WHITE);
                     break;
                 case 'L':
-                    environment[y][x] = LAVA;
-                    print(pos, FG_BLACK, BG_RED, "#");
+                    environment[i][j] = LAVA;
+                    setBgColor(BG_RED);
+                    setFgColor(FG_BLACK);
+                    printf("#");
+                    setBgColor(BG_BLACK);
+                    setFgColor(FG_WHITE);
                     break;
             }
         }
@@ -49,7 +58,9 @@ void setupTreasure(void){
             }
         }
         environment[spawnPos.y - 1][spawnPos.x - 1] = TREASURE;
-        print(spawnPos, FG_YELLOW, BG_BLACK, "Ж");
+        setCursorPos(spawnPos.x, spawnPos.y);
+        setFgColor(FG_YELLOW);
+        printf("Ж");
     }
 }
 
@@ -64,8 +75,10 @@ void spawnPortal(void){
         }
     }
     environment[spawnPos.y - 1][spawnPos.x - 1] = PORTAL;
-    print(spawnPos, FG_MAGENTA, BG_BLACK, "#");
-
+    setCursorPos(spawnPos.x, spawnPos.y);
+    setFgColor(FG_MAGENTA);
+    printf("#");
+    setFgColor(FG_WHITE);
 }
 
 bool checkEnemy(struct position pos){

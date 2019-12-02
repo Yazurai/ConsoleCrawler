@@ -3,14 +3,18 @@
 
 #include <stdint.h>
 #include <stdbool.h> 
-#include "UI/escCodes.h"
-#include "GameUtilities/position.h"
+#include "position.h"
+#include <windows.h>
+#include "escCodes.h"
 
 struct screenPos{
     uint8_t  x;
     uint8_t  y;
 };
 
-void print(position pos, fgColor fgC, bgColor bgC, char *text);
+void setCursorPos(uint8_t x, uint8_t y);
+
+void setFgColor(enum fgColor color);
+void setBgColor(enum bgColor color);
 
 #endif //UNTITLED_UIUTILIES_H
